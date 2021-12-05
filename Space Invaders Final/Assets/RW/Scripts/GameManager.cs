@@ -79,12 +79,21 @@ namespace RayWenderlich.SpaceInvadersUnity
 
         internal void TriggerGameOver(bool failure = true)
         {
-            PlayerPrefs.SetString("gamestate", "gameover");            
+            PlayerPrefs.SetInt("isGameOver", 1);            
             gameOver.SetActive(failure);
             allClear.SetActive(!failure);
-            restartButton.gameObject.SetActive(true);
             mainMenuButton.gameObject.SetActive(true);
-            nextLevelButton.gameObject.SetActive(true);
+            if (failure) {
+                restartButton.gameObject.SetActive(true);
+                PlayerPrefs.SetInt("score", 0);
+            }
+
+            if (!failure)
+            {
+                nextLevelButton.gameObject.SetActive(true);
+                PlayerPrefs.SetInt("score", score);
+            }
+             
             Time.timeScale = 0f;
             music.StopPlaying();
         }
@@ -115,6 +124,11 @@ namespace RayWenderlich.SpaceInvadersUnity
 
         private void Awake()
         {
+            PlayerPrefs.SetInt("isGameOver", 0);
+            score = PlayerPrefs.GetInt("score");
+            Debug.Log(score);
+            scoreLabel.text = $"Score: {score}";          
+                        
             highscore = PlayerPrefs.GetInt("highscore");
             highScoreLabel.text = $"High Score: {highscore}";
             if (Instance == null) 
@@ -129,8 +143,8 @@ namespace RayWenderlich.SpaceInvadersUnity
             lives = maxLives;
             livesLabel.text = $"Lives: {lives}";
 
-            score = 0;
-            scoreLabel.text = $"Score: {score}";
+            //score = 0;
+            //scoreLabel.text = $"Score: {score}";
             gameOver.gameObject.SetActive(false);
             allClear.gameObject.SetActive(false);
 
@@ -147,10 +161,22 @@ namespace RayWenderlich.SpaceInvadersUnity
                 Time.timeScale = 1f;
             });
 
+            nextLevelButton.onClick.AddListener(() =>
+            {
+                LoadNextLevel();
+                
+                Time.timeScale = 1f;
+            });
+
             restartButton.gameObject.SetActive(false);
             mainMenuButton.gameObject.SetActive(false);
             nextLevelButton.gameObject.SetActive(false);
             CrossFade.SetActive(true);
+        }
+
+        public void LoadNextLevel()
+        {
+            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex +1));
         }
 
         public void ReloadGame()
@@ -159,7 +185,7 @@ namespace RayWenderlich.SpaceInvadersUnity
         }
         public void ChangeSceneToMainMenu()
         {
-            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex - 1));
+            StartCoroutine(LoadLevel(0));
         }
 
         IEnumerator LoadLevel(int levelIndex)
