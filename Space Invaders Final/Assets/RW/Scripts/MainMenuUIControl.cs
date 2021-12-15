@@ -13,17 +13,6 @@ public class MainMenuUIControl : MonoBehaviour
         LoadNextLevel();
     }
 
-    public void ChangeSceneToControls()
-    {
-        SceneManager.LoadScene("ControlsScene");
-    }
-
-    public void ChangeSceneToCredits()
-    {
-        SceneManager.LoadScene("CreditsScene");
-    }
-
-
     public void QuitGame()
     {
         Debug.Log("QuitGame");
@@ -33,18 +22,6 @@ public class MainMenuUIControl : MonoBehaviour
     private void Awake()
     {
         CrossFade.SetActive(true);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void LoadNextLevel()
@@ -59,5 +36,46 @@ public class MainMenuUIControl : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Debug.Log("play animation");
         SceneManager.LoadScene(levelIndex);
+    }
+
+    public void ChooseLevel1()
+    {
+        StartCoroutine(LoadLevel(1));
+    }
+    public void ChooseLevel2()
+    {
+        StartCoroutine(LoadLevel(2));
+    }
+    public void ChooseLevel3()
+    {
+        StartCoroutine(LoadLevel(3));
+    }
+    public void ChooseLevel4()
+    {
+        StartCoroutine(LoadLevel(4));
+    }
+    public void ChooseLevel5()
+    {
+        StartCoroutine(LoadLevel(5));
+    }
+    public void ChooseLevel6()
+    {
+        StartCoroutine(LoadLevel(6));
+    }
+    public void ChooseLevel7()
+    {
+        StartCoroutine(LoadLevel(7));
+    }
+    public void ChooseLevel8()
+    {
+        StartCoroutine(LoadLevel(8));
+    }
+    public void ChooseLevel9()
+    {
+        StartCoroutine(LoadLevel(9));
+    }
+    public void ChooseLevel10()
+    {
+        StartCoroutine(LoadLevel(10));
     }
 }

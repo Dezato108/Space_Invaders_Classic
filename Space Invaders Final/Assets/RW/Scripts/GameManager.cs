@@ -58,7 +58,7 @@ namespace RayWenderlich.SpaceInvadersUnity
         [SerializeField]
         private Button nextLevelButton;
 
-        
+        public HealthBar healthBar;
 
         private int score;
         private int highscore;
@@ -66,12 +66,12 @@ namespace RayWenderlich.SpaceInvadersUnity
         internal void UpdateScore(int value)
         {
             score += value;
-            scoreLabel.text = $"Score: {score}";
+            scoreLabel.text = $"{score}";
             if (highscore<score)
             {
                 highscore = score;
                 PlayerPrefs.SetInt("highscore", highscore);
-                highScoreLabel.text = $"High Score: {highscore}";
+                highScoreLabel.text = $"{highscore}";
                 
             }
                 
@@ -101,8 +101,8 @@ namespace RayWenderlich.SpaceInvadersUnity
         internal void UpdateLives()
         {
             lives = Mathf.Clamp(lives - 1, 0, maxLives);
-            livesLabel.text = $"Lives: {lives}";
-
+            livesLabel.text = $"{lives}";
+            healthBar.SetHealth(lives);
             if (lives > 0) 
             {
                 return;
@@ -127,10 +127,10 @@ namespace RayWenderlich.SpaceInvadersUnity
             PlayerPrefs.SetInt("isGameOver", 0);
             score = PlayerPrefs.GetInt("score");
             Debug.Log(score);
-            scoreLabel.text = $"Score: {score}";          
+            scoreLabel.text = $"{score}";          
                         
             highscore = PlayerPrefs.GetInt("highscore");
-            highScoreLabel.text = $"High Score: {highscore}";
+            highScoreLabel.text = $"{highscore}";
             if (Instance == null) 
             {
                 Instance = this;
@@ -141,8 +141,8 @@ namespace RayWenderlich.SpaceInvadersUnity
             }
 
             lives = maxLives;
-            livesLabel.text = $"Lives: {lives}";
-
+            livesLabel.text = $"{lives}";
+            healthBar.SetMaxHealth(maxLives);
             //score = 0;
             //scoreLabel.text = $"Score: {score}";
             gameOver.gameObject.SetActive(false);
